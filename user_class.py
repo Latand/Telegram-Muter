@@ -1,26 +1,28 @@
 from telethon import TelegramClient
 import socks
 import logging
-from config import API_HASH, API_ID
+from config import API_HASH, API_ID, PROXY
 
 
 def proxy(data: str):
     """
     If you need proxy, example data = '123.456.789:1234:login:pass'
     """
-    if data == '':
+    if not data:
         return None
-    host, port, login, passw = data.split(":")
-    return socks.SOCKS5, host, int(port), True, login, passw
+    data = data.split(":")
+    if len(data) == 4:
+        host, port, login, passw = data
+        return socks.SOCKS5, host, int(port), True, login, passw
+    elif len(data) == 2:
 
-
-api_id = API_ID
-api_hash = API_HASH
+        host, port = data
+        return socks.SOCKS5, host, int(port), True
 
 
 class User(object):
-    def __init__(self, phone, proxy_data, password=None):
-        self.client: TelegramClient = TelegramClient(str(phone), api_id, api_hash, proxy=proxy(proxy_data))
+    def __init__(self, phone, proxy_data=PROXY, password=None):
+        self.client: TelegramClient = TelegramClient(str(phone), API_ID, API_HASH, proxy=proxy(proxy_data))
 
         self.client.start(phone=phone, password=password)
 
