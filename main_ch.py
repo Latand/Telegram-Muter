@@ -9,7 +9,7 @@ from sql_class import sql
 logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
                     level=logging.INFO)
 
-u = get_client(phone=PHONE_NUMBER, proxy="", password=AUTH_PASSWORD)
+u = get_client(phone=PHONE_NUMBER, password=AUTH_PASSWORD)
 
 channels = set([x["id"] for x in sql.select(where="channels")])
 
