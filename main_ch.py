@@ -60,17 +60,6 @@ async def admin_handler(event):
         logging.error(f"{err}")
 
 
-# Similarly, you can use incoming=True for messages that you receive
-@u.client.on(events.NewMessage(outgoing=True,
-                               pattern='eval (.+)'))
-async def admin_handler(event: NewMessage):
-    expression = event.pattern_match.group(1)
-    try:
-        await event.reply(str(eval(expression)))
-    except Exception as err:
-        logging.error(f"{err.__class__.__name__}: {err}")
-
-
 @u.client.on(events.NewMessage(incoming=True,
                                chats=channels))
 async def my_event_handler(event: NewMessage):
