@@ -21,7 +21,7 @@ def proxy(data: str):
 
 
 class User(object):
-    def __init__(self, phone, proxy_data=PROXY, password=None):
+    def __init__(self, phone, proxy_data=None, password=None):
         self.client: TelegramClient = TelegramClient(str(phone), API_ID, API_HASH, proxy=proxy(proxy_data))
 
         self.client.start(phone=phone, password=password)
@@ -48,7 +48,7 @@ class User(object):
         await self.client.send_message(username, str(message), **kwargs)
 
 
-def get_client(phone, proxy=None, password=None) -> User:  # upload client
+def get_client(phone, proxy=PROXY, password=None) -> User:  # upload client
     try:
         logging.info(f"trying number {phone}, {proxy}")
         client = User(phone, proxy, password=password)
