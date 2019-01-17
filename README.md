@@ -8,7 +8,8 @@ It updates the messages counter in those, like if you have read them, so you won
 2. Change config: 
   1. Enter your phone number
   2. Auth Password (if you have one)
-  3. API ID and API HASH (<a href='https://my.telegram.org/auth'> Go here</a> to create an app and get these)
+  3. Enter proxy if you have one. format: <code>'123.456.789:7777:login:password'</code> or  <code>'123.456.789:7777'</code>
+  4. API ID and API HASH (<a href='https://my.telegram.org/auth'> Go here</a> to create an app and get these)
 3. Run <code>setup.py</code> <b>ONCE</b> to create a db.
 4. Run script <code>main_ch.py</code> and enter code you will receive.
 5. Use the script on your VPS to read the messages 24/7
