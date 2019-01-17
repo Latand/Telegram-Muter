@@ -22,7 +22,7 @@ class User(object):
     def __init__(self, phone, proxy_data, password=None):
         self.client: TelegramClient = TelegramClient(str(phone), api_id, api_hash, proxy=proxy(proxy_data))
 
-        self.client.start(password=password)
+        self.client.start(phone=phone, password=password)
 
         self.me = None
 
