@@ -1,5 +1,4 @@
 from user_class import get_client
-from telethon.events import NewMessage
 from telethon import events
 from config import *
 import logging
@@ -17,9 +16,10 @@ channels = set([x["id"] for x in sql.select(where="channels")])
 @u.client.on(events.NewMessage(outgoing=True,
                                pattern='!unmute'))
 async def admin_handler(event):
-    await u.client.delete_messages(await event.get_input_chat(), message_ids=event.message.id)
+    input_chat = await event.get_input_chat()
+    await u.client.delete_messages(input_chat, message_ids=event.message.id)
 
-    chat = await u.client.get_entity(await event.get_input_chat())
+    chat = await u.client.get_entity(input_chat)
     logging.debug(f"{chat.to_dict()}")
     try:
         sql.delete(table="channels", where=['id'], what=[chat.id])
@@ -43,9 +43,10 @@ async def admin_handler(event):
 @u.client.on(events.NewMessage(outgoing=True,
                                pattern='!mute'))
 async def admin_handler(event):
-    await u.client.delete_messages(await event.get_input_chat(), message_ids=event.message.id)
+    input_chat = await event.get_input_chat()
+    await u.client.delete_messages(input_chat, message_ids=event.message.id)
 
-    chat = await u.client.get_entity(await event.get_input_chat())
+    chat = await u.client.get_entity(input_chat)
     logging.debug(f"{chat.to_dict()}")
     sql.insert(table="channels", id=chat.id)
     channels.add(chat.id)
@@ -60,11 +61,14 @@ async def admin_handler(event):
         logging.error(f"{err}")
 
 
-@u.client.on(events.NewMessage(incoming=True,
-                               chats=channels))
-async def my_event_handler(event: NewMessage):
-    event.message.message: str
-    print(await u.client.send_read_acknowledge(await event.get_input_chat()))
+@u.client.on(events.NewMessage(incoming=True))
+async def my_event_handler(event):
+    message = event.message.to_dict()
+    uid = message['to_id'].get('user_id')
+    if not uid:
+        uid = message['to_id'].get('channel_id')
+    if uid in channels:
+        print(await u.client.send_read_acknowledge(await event.get_input_chat()))
 
 
 loop = asyncio.get_event_loop()
