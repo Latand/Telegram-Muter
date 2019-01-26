@@ -13,6 +13,19 @@ def dict_factory(cursor, row):
 
 
 class Mysql(object):
+    """
+    To select use: sql = Mysql()
+                   sql.select(what=["column1", "column2"], where=["table"],
+                              condition={"column3": variable3})
+    To insert: 
+                   sql.insert(table="table", column1=variable1, column2=variable2)
+    To delete:
+                   sql.delete(table="table", where=["column1", "column2"], what=["variable1", "variable2"])
+    To update:
+                   sql.update(table="table", column1=var1, column2=var2, condition={"column3": variable3})
+    """
+    
+    
     def __init__(self, debug=False):
         self.connection = None  # self.connect()
         self.debug = debug
