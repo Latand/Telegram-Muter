@@ -12,9 +12,9 @@ def dict_factory(cursor, row):
     return d
 
 
-class Mysql(object):
+class SQL(object):
     """
-    To select use: sql = Mysql()
+    To select use: sql = SQL()
                    sql.select(what=["column1", "column2"], where=["table"],
                               condition={"column3": variable3})
     To insert: 
@@ -204,4 +204,4 @@ class Mysql(object):
                     return ids
 
 
-sql = Mysql()
+sql = SQL()
